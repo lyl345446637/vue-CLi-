@@ -9,7 +9,9 @@ const request = axios.create({
   baseURL: 'http://api-toutiao-web.itheima.net' // 请求的基础路径 是下面注释的简化版本
 })
 
-axios({
+// 导出请求方法
+export default request
+/* axios({
   method: '',
   url: '/a'
 })
@@ -17,7 +19,7 @@ axios({
 axios({
   method: '',
   url: '/b'
-})
+}) */
 
 // axios({
 //     method: '',
@@ -32,9 +34,6 @@ axios({
 // 请求拦截器
 
 // 响应拦截器
-
-// 导出请求方法
-export default request
 
 // 谁要使用谁就加载 request
 //  import request from 'request.js'
