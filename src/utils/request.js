@@ -1,4 +1,5 @@
 /* 基于 axios 封装的请求模块 */
+/* .VUE文件中 在 script 这么引用 import request from '@/utils/request.js' */
 
 import axios from 'axios'
 
@@ -9,8 +10,13 @@ const request = axios.create({
   baseURL: 'http://api-toutiao-web.itheima.net' // 请求的基础路径 是下面注释的简化版本
 })
 
+// 上面第二种写法
+// const req1 = axios.create()
+// req1.defaults.baseURL = 'http://api-toutiao-web.itheima.net'
+
 // 导出请求方法
 export default request
+
 /* axios({
   method: '',
   url: '/a'
