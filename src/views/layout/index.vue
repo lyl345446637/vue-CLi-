@@ -7,7 +7,23 @@
         <AppAside class="aside-main" />
     </el-aside>
     <el-container>
-        <el-header class="header">Header</el-header>
+        <el-header class="header">
+          <div>
+            <i class="el-icon-s-fold"></i>
+            <span>后台维护系统</span>
+          </div>
+          <el-dropdown>
+            <div class="avatar-wrap">
+              <img class="avatar" :src="user.photo" alt=""/>
+              <span>{{ user.name }}</span>
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>个人设置</el-dropdown-item>
+              <el-dropdown-item>退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-header>
         <el-main class="main">
             <!-- 子路由出口 这里是home的 index.vue -->
             <router-view />
@@ -18,15 +34,31 @@
 /* script搭建js部分 */
 <script>
 import AppAside from './components/aside.vue'
+import { getUserProfile } from '@/api/user'
 export default {
   name: 'LayoutIndex',
   components: {
     AppAside
   },
   data () {
-    return {}
+    return {
+      user: {} // 当前登陆用户信息
+    }
   },
-  methods: {}
+  created () {
+    // 组件初始化好, 请求获取用户资料
+    this.loadUserProfile()
+  },
+  methods: {
+    // 除了登录接口外，其他所有接口都需要授权才能请求使用
+    // 或者说，其他接口都需要提供你的身份令牌才能获取数据
+    loadUserProfile () {
+      getUserProfile().then(res => {
+        console.log(res.data.data)
+        console.log(this.user)
+      })
+    }
+  }
 }
 </script>
 
@@ -39,13 +71,27 @@ export default {
     bottom: 0;
 }
 .aside {
-    background-color: rgb(226, 83, 17);
     .aside-main {
         height: 100%;
     }
 }
 .header {
-    background-color: rgb(196, 251, 255);
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    background-color: rgb(255, 255, 255);
+}
+.avatar-wrap{
+    display: flex; // 弹性布局 https://www.cnblogs.com/hellocd/p/10443237.html
+    align-items: center; // 上下居中
+    .avatar{ //less写法
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
 }
 .main {
     background-color: rgb(255, 255, 255);

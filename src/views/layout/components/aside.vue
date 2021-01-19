@@ -1,12 +1,13 @@
 /* 这是首页左侧导航的部分 */
 <template>
 <!-- 以下来源于el官方组件代码 -->
+<!-- default-active控制当前导航是否高亮 -->
 <el-menu
     class="nav-menu"
-    default-active="2"
+    default-active="/"
     @open="handleOpen"
     @close="handleClose"
-    background-color="#545c64"
+    background-color="#001d35"
     text-color="#fff"
     active-text-color="#ffd04b"
     router
