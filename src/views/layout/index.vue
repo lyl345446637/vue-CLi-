@@ -2,14 +2,26 @@
 /* template搭建div部分 */
 <template>
     <el-container class="layout-Component">
-    <el-aside class="aside" width="200px">
+    <el-aside class="aside" width="auto">
         <!-- 引入组件 -->
-        <AppAside class="aside-main" />
+        <AppAside class="aside-main" :is-collapse="isCollapse" />
     </el-aside>
     <el-container>
         <el-header class="header">
           <div>
-            <i class="el-icon-s-fold"></i>
+            <!--
+              class 样式处理
+                {
+                  css类名: 布尔值
+                }
+                ture: 作用类名
+                false: 不作用类名
+            -->
+            <i :class="{
+              'el-icon-s-fold': !isCollapse,
+              'el-icon-s-unfold': isCollapse
+            }"
+             @click="isCollapse = !isCollapse"></i>
             <span>后台维护系统</span>
           </div>
           <el-dropdown>
@@ -20,7 +32,8 @@
             </div>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>个人设置</el-dropdown-item>
-              <el-dropdown-item>退出登录</el-dropdown-item>
+              <!-- 组件默认不识别原生事件 除非内部做了处理-->
+              <el-dropdown-item @click.native="onLogout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-header>
@@ -42,7 +55,8 @@ export default {
   },
   data () {
     return {
-      user: {} // 当前登陆用户信息
+      user: {}, // 当前登陆用户信息
+      isCollapse: false // 侧边状态栏展示状态
     }
   },
   created () {
@@ -54,8 +68,26 @@ export default {
     // 或者说，其他接口都需要提供你的身份令牌才能获取数据
     loadUserProfile () {
       getUserProfile().then(res => {
-        console.log(res)
+        // console.log(res)
         this.user = res.data.data
+      })
+    },
+    onLogout () {
+      this.$confirm('确认退出吗？', '退出提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 把用户的登陆状态清除
+        window.localStorage.removeItem('user')
+
+        // 跳转到登陆页面
+        this.$router.push('/login')
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     }
   }

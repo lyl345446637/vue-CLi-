@@ -2,6 +2,7 @@
 <template>
 <!-- 以下来源于el官方组件代码 -->
 <!-- default-active控制当前导航是否高亮 -->
+<!-- :collapse设置导航缩略 -->
 <el-menu
     class="nav-menu"
     default-active="/"
@@ -11,6 +12,7 @@
     text-color="#fff"
     active-text-color="#ffd04b"
     router
+    :collapse="isCollapse"
 >
 
     <el-menu-item index="/">
@@ -48,8 +50,11 @@
 <script>
 export default {
   name: 'AppAside',
+  props: ['is-collapse'],
   data () {
-    return {}
+    return {
+      // isCollapse: true
+    }
   },
   methods: {
     handleOpen (key, keyPath) {
