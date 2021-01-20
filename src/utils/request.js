@@ -14,30 +14,31 @@ const request = axios.create({
 // const req1 = axios.create()
 // req1.defaults.baseURL = 'http://api-toutiao-web.itheima.net'
 
-// 导出请求方法
-export default request
-
-/* axios({
-  method: '',
-  url: '/a'
-})
-
-axios({
-  method: '',
-  url: '/b'
-}) */
-
-// axios({
-//     method: '',
-//     url: 'http://127.0.0.1:3000/a'
-// })
-
-// axios({
-//     method: '',
-//     url: 'http://127.0.0.1:3000/b'
-// })
-
 // 请求拦截器
+request.interceptors.request.use(
+  // 任何所有请求会经过这里
+  // config 是当前请求相关的配置信息对象
+  // config 是可以修改的
+  function (config) {
+    // json格式进行字符转化为对象
+    const user = JSON.parse(window.localStorage.getItem('user'))
+
+    // 如果有登陆用户信息，则统一设置token
+    if (user) {
+      config.headers.Authorization = `Bearer ${user.token}`
+    }
+
+    // 然后我们就可以在允许请求出去之前定制统一业务功能处理
+    // 列入： 统一的设置 token
+
+    // 当这里reture config 之后请求才会真正发出去
+    return config
+  },
+  // 请求失败，会经过这里
+  function (error) {
+    return Promise.reject(error)
+  }
+)
 
 // 响应拦截器
 
@@ -48,3 +49,6 @@ axios({
 //      method: ,
 //      url: ''
 //  })
+
+// 导出请求方法
+export default request

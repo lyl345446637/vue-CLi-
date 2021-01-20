@@ -54,7 +54,7 @@ export default {
     // 或者说，其他接口都需要提供你的身份令牌才能获取数据
     loadUserProfile () {
       getUserProfile().then(res => {
-        // res就是传回来的数据console.log(res)
+        console.log(res)
         this.user = res.data.data
       })
     }

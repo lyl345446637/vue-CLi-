@@ -65,6 +65,7 @@ export default {
       formRules: { // 表单验证规则配置
         // 要验证的数据名称: 规则列表[]
         mobile: [
+          // trigger 用来配置触发校验的时机，有两个选项，change是当输入的内容发送变化的时候，blur当失去焦点的时候
           { required: true, message: '请输入手机号', trigger: 'blur' },
           // required 是否为必填项  message 提示消息   trigger 验证机制，有多种
           { pattern: /^1[3|5|7|8|9]\d{9}$/, message: '请输入正确号码格式', trigger: 'change' }
@@ -79,10 +80,17 @@ export default {
         agree: [
           {
             // 自定义校验规则
+            // 验证通过: callback()
+            // 验证失败: callback(new Error('错误消息'))
+            // validator 验证函数不是你来调用，而是当 element 表单触发验证的时候他会自己内部调用
+            // 所以你只需要提供效验函数处理逻辑
+            // 通过: callback()
             validator: (rule, value, callback) => {
               if (value) {
+                // 验证通过
                 callback()
               } else {
+                // 验证失败
                 callback(new Error('请勾选同意用户协议'))
               }
             },
@@ -120,9 +128,10 @@ export default {
       // 2、实际工作中，接口非常容易变动
       // 建议把所有的请求都封装成函数 统一进行管理
       login(this.user).then(res => {
-        console.log(res)
+        // console.log(res)
 
         // 账 13911111111 密 246810
+        // 账 13922222222 密 246810
         // 登录成功 -> 来自el官方组建的写法 复制
         this.$message({
           message: '登陆成功',
@@ -131,6 +140,12 @@ export default {
 
         // 关闭·loading
         this.loginLoading = false
+
+        // 将接口返回的用户相关数据放到本地存储，方便应用数据共享
+        // 本地存储只能存字符串
+        // 如果需要存储对象、数组类型的数据，则把他们转为json格式字符串进行存储
+        window.localStorage.setItem('user', JSON.stringify(res.data.data))
+        // console.log()
 
         // 跳转到首页
         this.$router.push({
