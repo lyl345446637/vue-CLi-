@@ -2,9 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // @ 表示 src 目录 , 他是 src 目录的路径别名
 // @ 好处：不受当前文件路径影响
-import Login from '@/views/login/index.vue' // 引入登陆页面
-import Home from '@/views/home/index.vue' // 引入首页页面
-import Layout from '@/views/layout/index.vue' // 引入首页页面
+import Login from '@/views/login/' // 引入登陆页面
+import Home from '@/views/home/' // 引入首页页面
+import Layout from '@/views/layout/' // 引入首页层级页面
+import Article from '@/views/article/' // 引入首页层级页面
 Vue.use(VueRouter)
 
 const routes = [
@@ -28,6 +29,11 @@ const routes = [
         // 路由的名字时干什么的？
         name: 'home',
         component: Home
+      },
+      {
+        path: '/article',
+        name: 'article',
+        component: Article
       }
     ]
   }
